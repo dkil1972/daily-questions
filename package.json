@@ -1,0 +1,20 @@
+{
+  "name": "daily-questions",
+  "version": "1.0.0",
+  "description": "a chatbot to help you achieve your goals",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+   "start" : "node index.js" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkil1972/daily-questions.git"
+  },
+  "author": "Dermot Kilroy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dkil1972/daily-questions/issues"
+  },
+  "homepage": "https://github.com/dkil1972/daily-questions#readme"
+}
