@@ -1,5 +1,4 @@
-console.log('hello world');
+let clientId = process.env.CLIENTID;
+let clientSecret = process.env.CLIENT_SECRET;
 
-let apiToken = process.env.APITOKEN;
-
-console.log(apiToken);
+console.log(clientId + ' : ' + clientSecret);
