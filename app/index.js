@@ -1,24 +1,15 @@
-let http = require('http');
+let Botkit = require('botkit');
 
 let clientId = process.env.CLIENTID;
 let clientSecret = process.env.CLIENT_SECRET;
 
-let options = {
-    host: 'https://slack.com/oauth/authorize', 
-    path: '?client_id=' + clientId + '&scope=bot'
-};
+let controller = Botkit.slackbot();
 
-var callback = function(response) {
-    let str = '';
-    response.on('data', function(chunk){
-        str += chunk;
-    });
+controller.spawn({
+    token:process.env.TOKEN
+}).startRTM();
 
-    response.on('end', function() {
-        console.log(str);
-    });
-};
+controller.hears('hello',['direct_message', 'direct_mention', 'mention'], function(bot, message) {
+    bot.reply(message, 'Hello Yourself.');
+});
 
-http.request(options, callback).end();
-
-console.log(clientId + ' : ' + clientSecret);

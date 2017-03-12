@@ -5,11 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-   "start" : "node index.js" 
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dkil1972/daily-questions.git"
+  },
+  "dependencies": {
+    "botkit": "0.5.1"
   },
   "author": "Dermot Kilroy",
   "license": "ISC",
