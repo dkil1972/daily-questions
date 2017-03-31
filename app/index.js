@@ -115,6 +115,8 @@ function currentRealityConversationAbout(topic, bot){
 
 controller.hears('hello',['direct_message', 'direct_mention', 'mention'], function(bot, message) {
     bot.startConversation(message, function(err, convo) {
+        //TODO Have we spoken to this user before?
+        
         convo.ask('hello, would you like to set a goal?', [
             {
                 pattern: bot.utterances.yes,
