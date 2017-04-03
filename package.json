@@ -12,8 +12,11 @@
     "url": "git+https://github.com/dkil1972/daily-questions.git"
   },
   "dependencies": {
-    "botkit": "0.5.1",
+    "botkit": "0.5.x",
     "mongodb":"2.2.25"
+  },
+  "devDependencies": {
+      "botkit-testing": "0.1.x"
   },
   "author": "Dermot Kilroy",
   "license": "ISC",
