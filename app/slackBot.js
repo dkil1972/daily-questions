@@ -1,11 +1,11 @@
 //TODO set the context if it's first time user has said hello then explain the purpose of the daily questions
 //TODO /configure will allow someone to set times etc for asking the daily questions
 //TODO /questions will list all the daily questions
+'use strict';
+
 let MongoClient = require('mongodb').MongoClient;
 
 let uri = 'mongodb://172.17.0.2:27017/daily-questions'
-
-
 
 function insertDocuments(db, data, callback){
     let dqs = db.collection('daily-questions');
@@ -33,6 +33,23 @@ function confirmSetupUsing(bot) {
     ]
 }
 
+function publishMessage(reminderTime, goal) {
+    let amqp = require('amqplib/callback_api');
+
+    amqp.connect('amqp://172.17.0.4', function(err,conn){
+        console.log('[x] - ' + err);
+        conn.createChannel(function (err, ch){
+            var q = 'dqReminderTime';
+
+            ch.assertQueue(q, {durable: false});
+            // Note: on Node 6 Buffer.from(msg) should be used
+            ch.sendToQueue(q, new Buffer(reminderTime));
+            console.log(" [x] Sent " + reminderTime);
+        });
+        setTimeout(function() { conn.close();}, 500);
+    });
+}
+
 function chatAboutSetupUsing(bot, goal) {
     return [
         {
@@ -41,12 +58,7 @@ function chatAboutSetupUsing(bot, goal) {
                 convo.say("great stuff, all setup...");
                 convo.say("I'll ask you everyday at " + response.text + " did you do your best to " + goal + "?");
                 convo.ask("All good with you?", confirmSetupUsing(bot));
-                MongoClient.connect(uri, function(err, db) {
-                    console.log('**** ' + err);
-                    insertDocuments(db, response, function() {
-                        db.close();
-                    });
-                });
+                publishMessage(response.text, goal);
                 convo.next();
             }
         }
@@ -123,6 +135,7 @@ SlackBot.prototype.init = function(controller){
                 {
                     pattern: bot.utterances.yes,
                     callback: function(response, convo){
+                        publishMessage(response.text, 'testing');
                         convo.say("ok, great!");
                         convo.ask("What's the goal?", currentRealityConversationAbout("goal", bot));
                         convo.next();

@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "botkit": "0.5.x",
-    "mongodb":"2.2.25"
+    "mongodb":"2.2.25",
+    "amqplib": "0.5.x"
   },
   "devDependencies": {
       "botkit-testing": "0.1.x"
