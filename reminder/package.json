@@ -1,0 +1,28 @@
+{
+  "name": "dq-reminder",
+  "version": "1.0.0",
+  "description": "reminds the user to rate themselves on how well they did in achieving their goals",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkil1972/daily-questions.git"
+  },
+  "dependencies": {
+    "botkit": "0.5.x",
+    "mongodb":"2.2.25",
+    "amqplib": "0.5.x"
+  },
+  "devDependencies": {
+      "botkit-testing": "0.1.x"
+  },
+  "author": "Dermot Kilroy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dkil1972/daily-questions/issues"
+  },
+  "homepage": "https://github.com/dkil1972/daily-questions#readme"
+}

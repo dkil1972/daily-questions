@@ -36,7 +36,7 @@ function confirmSetupUsing(bot) {
 function publishMessage(reminderTime, goal) {
     let amqp = require('amqplib/callback_api');
 
-    amqp.connect('amqp://172.17.0.4', function(err,conn){
+    amqp.connect('amqp://172.17.0.3', function(err,conn){
         console.log('[x] - ' + err);
         conn.createChannel(function (err, ch){
             var q = 'dqReminderTime';
@@ -128,6 +128,7 @@ SlackBot.prototype.init = function(controller){
     }).startRTM();
 
     controller.hears('hello',['direct_message', 'direct_mention', 'mention'], function(bot, message) {
+        var util = require('util');
         bot.startConversation(message, function(err, convo) {
             //TODO Have we spoken to this user before?
 
@@ -135,6 +136,7 @@ SlackBot.prototype.init = function(controller){
                 {
                     pattern: bot.utterances.yes,
                     callback: function(response, convo){
+                        console.log(util.inspect(convo, 3));
                         publishMessage(response.text, 'testing');
                         convo.say("ok, great!");
                         convo.ask("What's the goal?", currentRealityConversationAbout("goal", bot));
