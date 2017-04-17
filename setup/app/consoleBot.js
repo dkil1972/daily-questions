@@ -1,3 +1,5 @@
+'use strict';
+
 var ConsoleBot = function () {};
 
 ConsoleBot.prototype.init = function(controller) {

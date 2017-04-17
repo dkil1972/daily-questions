@@ -1,9 +1,12 @@
+'use strict';
+
 let Botkit = require('botkit');
 let consoleBot = require('./ConsoleBot');
-let slackBot = require('./SlackBot');
+let slackBot = require('./slackBot')();
+let exchange = require('./exchange')();
 
 let slackController = Botkit.slackbot();
 let consoleController = Botkit.consolebot();
 
-slackBot.prototype.init(slackController);
+slackBot.init(slackController, exchange);
 consoleBot.prototype.init(consoleController);

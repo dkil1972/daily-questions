@@ -7,6 +7,7 @@ const postMan = () => {
             let q = 'dqReminderTime';
             ch.assertQueue(q, {durable:false});
             ch.consume(q, (msg) => {
+                //store these messages in the database (remember at most once message processing)dd
                 console.log('[++++] - ' + msg.content.toString());
             }, {noAck:true});
 
