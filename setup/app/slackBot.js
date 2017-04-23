@@ -117,13 +117,19 @@ function currentRealityConversationAbout(topic, bot, exchange){
 const slackBot = () => {
     return {
         init : (controller, exchange) => {
-            let bot = controller.spawn({
+            controller.spawn({
                 token:process.env.TOKEN
             }).startRTM();
 
+
+
             controller.hears('hello',['direct_message', 'direct_mention', 'mention'], 
-//                let goalSetupConversation = require('./goalSetupConversation');
-//                let conversation = goalSetupConversation.init(bot);
+                (bot, message) => {
+                    let goalSetupConversation = require('./goalSetupConversation');
+                    let conversation = goalSetupConversation.init(bot, message);
+                  
+
+
 //                conversation.activate();
 //                function(bot, message) {
 //                    bot.startConversation(message, function(err, convo) {
@@ -133,7 +139,7 @@ const slackBot = () => {
 //                            message.createFrom('slack', 'DailyQuestionSetup', response, goal));
 //                    });
 //                });
-            );
+                });
         }
     }
 }
