@@ -127,10 +127,10 @@ const slackBot = () => {
                 (bot, message) => {
                     let goalSetupConversation = require('./goalSetupConversation');
                     let conversation = goalSetupConversation.init(bot, message);
+                    conversation.activate();
                   
 
 
-//                conversation.activate();
 //                function(bot, message) {
 //                    bot.startConversation(message, function(err, convo) {
 //                        //TODO Have we spoken to this user before?
