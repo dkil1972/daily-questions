@@ -41,18 +41,17 @@ function chatAboutSetupUsing(bot, goal, exchange) {
                 require('datejs');
                 let exact = Date.parse(response.text);
                 if(exact===null) {
-                    convo.say("sorry I don't understand the time you've entered - " + response.text);
+                    convo.say(
+                        "sorry I don't understand the time you've entered - " + response.text);
                     convo.ask(
                         "What time, each day, would you like me to ask if you did your best to " + response.text + "?", 
-                        chatAboutSetupUsing(bot, goal, exchange));
-                convo.next();
+                    chatAboutSetupUsing(bot, goal, exchange));
+                    convo.next();
                 }else{
                     convo.say("great stuff, all setup...");
                     convo.say("I'll ask you everyday at " + response.text + " did you do your best to " + goal + "?");
                     convo.ask("All good with you?", confirmSetupUsing(bot));
                 }
-                let message = require('./message');
-                exchange.publish(message.createFrom('slack', 'DailyQuestionSetup', response, goal));
                 convo.next();
             }
         }
@@ -118,43 +117,23 @@ function currentRealityConversationAbout(topic, bot, exchange){
 const slackBot = () => {
     return {
         init : (controller, exchange) => {
-            controller.spawn({
+            let bot = controller.spawn({
                 token:process.env.TOKEN
             }).startRTM();
 
             controller.hears('hello',['direct_message', 'direct_mention', 'mention'], 
-                function(bot, message) {
-                    bot.startConversation(message, function(err, convo) {
-                        //TODO Have we spoken to this user before?
-
-                        convo.ask('hello, would you like to set a goal?', [
-                            {
-                                pattern: bot.utterances.yes,
-                                callback: function(response, convo){
-                                    convo.say("ok, great!");
-                                    convo.ask("What's the goal?",
-                                        currentRealityConversationAbout("goal", bot, exchange));
-                                    convo.next();
-                                }
-                            },
-                            {
-                                pattern: bot.utterances.no,
-                                callback: function(response, convo){
-                                    convo.say("that's a shame, say hello if you change your mind");
-                                    convo.next();
-                                }
-                            },
-                            {
-                                default: true,
-                                callback: function(response, convo){
-                                    convo.say(
-                                        "I don't understand, did you want to set a goal, yes or no?");
-                                    convo.next();
-                                }
-                            }
-                        ]);
-                    });
-                });
+//                let goalSetupConversation = require('./goalSetupConversation');
+//                let conversation = goalSetupConversation.init(bot);
+//                conversation.activate();
+//                function(bot, message) {
+//                    bot.startConversation(message, function(err, convo) {
+//                        //TODO Have we spoken to this user before?
+//                        let message = require('./message');
+//                        exchange.publish(
+//                            message.createFrom('slack', 'DailyQuestionSetup', response, goal));
+//                    });
+//                });
+            );
         }
     }
 }
