@@ -10,7 +10,7 @@ let uri = 'mongodb://172.17.0.2:27017/daily-questions'
 function insertDocuments(db, data, callback){
     let dqs = db.collection('daily-questions');
     dqs.insertOne({'response' : data}, function(err, db){
-        callback();  
+        callback();
     });
 }
 
@@ -44,7 +44,7 @@ function chatAboutSetupUsing(bot, goal, exchange) {
                     convo.say(
                         "sorry I don't understand the time you've entered - " + response.text);
                     convo.ask(
-                        "What time, each day, would you like me to ask if you did your best to " + response.text + "?", 
+                        "What time, each day, would you like me to ask if you did your best to " + response.text + "?",
                     chatAboutSetupUsing(bot, goal, exchange));
                     convo.next();
                 }else{
@@ -65,7 +65,7 @@ function respondToShortNameWith(bot, exchange) {
             callback: function(response, convo){
                 convo.say("almost done...");
                 convo.ask(
-                    "What time, each day, would you like me to ask if you did your best to " + response.text + "?", 
+                    "What time, each day, would you like me to ask if you did your best to " + response.text + "?",
                     chatAboutSetupUsing(bot, response.text, exchange));
                 convo.next();
             }
@@ -123,12 +123,11 @@ const slackBot = () => {
 
 
 
-            controller.hears('hello',['direct_message', 'direct_mention', 'mention'], 
+            controller.hears('hello',['direct_message', 'direct_mention', 'mention'],
                 (bot, message) => {
                     let goalSetupConversation = require('./goalSetupConversation');
-                    let conversation = goalSetupConversation.init(bot, message);
-                    conversation.activate();
-                  
+                    goalSetupConversation.init(bot, message, exchange);
+
 
 
 //                function(bot, message) {
