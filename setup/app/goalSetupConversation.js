@@ -3,64 +3,61 @@
 require ('datejs');
 
 const goalSetupConversation = () => {
-    let timeSetup = (questionText, utterances, exchange) => {
-        //TODO have a goal setup conversation and a time setup conversation and jump between the two
-        return (response, conversation) => {
-            let goal = response.text;
-            conversation.addQuestion(questionText, (resp, con) => {
-                let questionTime = Date.parse(resp.text);
-                if(questionTime === null) {
-                    con.addMessage('I\'m sorry, I didn\'t understand ' + resp.text);
-                    timeSetup('try again', utterances, exchange)(resp, con);
-                } else {
-                    con.addMessage('You want me to ask you every day at ' + questionTime.toLocaleTimeString());
-                    con.addQuestion('Is that correct?', [
-                        {
-                            pattern: utterances.yes,
-                            callback: (r, c) => {
-                                c.addMessage('Great, let\'s see if it\'s all setup...');
-                                c.addMessage('I\'ll ask you...');
-                                c.addMessage('Did you do your best to ' + goal + '?');
-                                c.addMessage('Everyday at ' + questionTime.toLocaleTimeString() + '...')
-                                c.addQuestion('Does the daily question look correct to you (yes or no)?', [
-                                    {
-                                        pattern: utterances.yes,
-                                        callback: (r, c) => {
-                                            c.addMessage('Great, all setup. catch ya later.');
-                                            let message = require('./message');
-                                            exchange.publish(
-                                                message.createFrom('slack', 'DailyQuestionSetup', response, goal, questionTime));
-                                            c.next();
-                                        }
-                                    },
-                                    {
-                                        pattern: utterances.no,
-                                        callback: (r, c) => {
-                                            c.addMessage('Let\'s try again...');
-                                            c.next();
-                                        }
-                                    }
-                                ], {}, 'goal-setup');
-                                c.next();
-                            }
-                        },
-                        {
-                            pattern: utterances.no,
-                            callback: timeSetup('try again', utterances, exchange)
-                        }
-                    ], {}, 'goal-setup');
-                    con.next();
+    let confirmCorrectSetup = (conversation, questionTime, bot, goal) => {
+        conversation.say('Great, let\'s see if it\'s all setup...');
+        conversation.say('I\'ll ask you...');
+        conversation.say('Did you do your best to ' + goal + '?');
+        conversation.say('Everyday at ' + questionTime.toLocaleTimeString() + '...')
+        conversation.ask('Does the daily question look correct to you (yes or no)?', [
+            {
+                pattern: bot.utterances.yes,
+                callback: (r, c) => {
+                    c.say('Great, all setup. catch ya later.');
+                    c.next();
                 }
-            }, {}, 'goal-setup');
-            conversation.next();
-        }
+            },
+            {
+                pattern: bot.utterances.no,
+                callback: (r, c) => {
+                    c.say('Let\'s try again...');
+                    c.next();
+                }
+            }
+        ]);
+        conversation.next();
     }
 
     return {
         init : (bot, message, exchange) => {
             bot.createConversation(message, (err, convo) => {
-                convo.addQuestion('what is the goal?',
-                    timeSetup('sounds good, what time each day would you like me to ask how well you did?', bot.utterances, exchange), {}, 'goal-setup');
+                let goal = '';
+                let questionTime;
+                convo.addQuestion('what is the goal?', (response, conversation) => {
+                    goal = response.text;
+                    conversation.gotoThread('time-setup');
+                }, {}, 'question-setup');
+
+                convo.addQuestion('What time each day would you like me to ask how well you did?', (response, conversation) => {
+                    questionTime = Date.parse(response.text);
+                    if(questionTime === null) {
+                        conversation.say('I\'m sorry, I didn\'t understand ' + response.text);
+                        conversation.repeat();
+                    } else {
+                        convo.say('You want me to ask you every day at ' + questionTime.toLocaleTimeString());
+                        convo.ask('Is that correct?', [
+                            {
+                                pattern: bot.utterances.yes,
+                                callback: (r, c) => {
+                                    confirmCorrectSetup(c, questionTime, bot, goal);
+                                    let message = require('./message');
+                                    exchange.publish(
+                                        message.createFrom('slack', 'DailyQuestionSetup', r, goal, questionTime));
+                                }
+                            }
+                        ]);
+                    }
+                    conversation.next();
+                }, {}, 'time-setup');
 
                 convo.addMessage({ text:'bad' }, 'what-now');
                 convo.addMessage({
@@ -72,7 +69,7 @@ const goalSetupConversation = () => {
                     {
                         pattern: bot.utterances.yes,
                         callback: (response, con) => {
-                            con.gotoThread('goal-setup');
+                            con.gotoThread('question-setup');
                         }
                     },
                     {
