@@ -14,7 +14,8 @@
   "dependencies": {
     "botkit": "0.5.x",
     "mongodb":"2.2.25",
-    "amqplib": "0.5.x"
+    "amqplib": "0.5.x",
+    "datejs":"1.0.0-rc3" 
   },
   "devDependencies": {
       "botkit-testing": "0.1.x"

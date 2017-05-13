@@ -1,6 +1,6 @@
 let Botkit = require('botkit');
-let postMan = require('./PostMan')
 let reminders = require('./reminders');
+let postMan = require('./PostMan')(reminders);
 let consoleBot = require('./consoleBot')(reminders);
 let slackBot = require('./slackBot')(reminders);
 
