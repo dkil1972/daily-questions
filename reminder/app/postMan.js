@@ -10,7 +10,7 @@ const postMan = (reminders) => {
                 //TODO (remember at most once message processing)dd
                 //TODO what happens if the db is down?
                 console.log('processing message...');
-                reminders.insert(JSON.parse(msg.content));
+                reminders.insert(JSON.parse(msg.content, 'daily-questions'));
             }, {noAck:true});
 
         });

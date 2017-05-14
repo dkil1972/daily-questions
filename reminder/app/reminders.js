@@ -5,12 +5,12 @@ let assert = require('assert');
 const reminders = () => {
     const url = 'mongodb://172.17.0.3:27017/daily-questions-reminder';
     return {
-        insert : (message) => {
+        insert : (message, collection) => {
             MongoClient.connect(url, function(err, db) {
                 assert.equal(null, err);
                 console.log("Connected correctly to server");
 
-                db.collection('daily-questions').insertOne(message, function(err, r) {
+                db.collection(collection).insertOne(message, function(err, r) {
                     assert.equal(null, err);
                     assert.equal(1, r.insertedCount);
                     db.close();

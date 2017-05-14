@@ -16,7 +16,6 @@ const slackBot = (reminders) => {
                 let oneMinuteAgo = new Date(now).add({minutes : -1});
                 reminders.get({'payload.time' : { $gte : oneMinuteAgo, $lte : now }}, (docs) => {
                     docs.forEach(function(element) {
-                        console.log(element.payload.userId);
                         let message = {
                             text:'hi there',
                             user: element.payload.userId
@@ -28,10 +27,11 @@ const slackBot = (reminders) => {
                                 let rating = parseInt(response.text);
                                 if(isNaN(rating)){
                                     convo.say('give me a number between 1 and 10...');
-                                    convo.silentRepeat();
+                                    convo.repeat();
+                                    convo.next();
                                 } else {
-                                    console.log('you said - ' + rating);
-                                    convo.say('you said ' + rating);
+                                    convo.say('thanks, speak tomorrow');
+                                    reminders.insert({userId : convo.context.user, channel : convo.context.channel, rating : rating }, 'daily-question-rating');
                                     convo.next();
                                 }
                             });
@@ -39,7 +39,7 @@ const slackBot = (reminders) => {
                         }, {}, 'default');
                     });
                 });
-            }, 60000);
+            }, 20000);
         }
     }
 }
