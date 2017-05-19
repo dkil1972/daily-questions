@@ -2,7 +2,8 @@ let amqp = require('amqplib/callback_api');
 let util = require('util');
 
 const postMan = (reminders) => {
-    amqp.connect('amqp://172.17.0.2', (err, conn) => {
+    let rabbitIp = process.env.RABBIT_IP
+    amqp.connect('amqp://'+ rabbitIp, (err, conn) => {
         conn.createChannel((err, ch) => {
             let q = 'dqReminderTime';
             ch.assertQueue(q, {durable:false});

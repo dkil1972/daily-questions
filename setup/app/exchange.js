@@ -5,7 +5,8 @@ let amqp = require('amqplib/callback_api');
 const exchange = () => {
     return {
         publish : (message) => {
-            amqp.connect('amqp://172.17.0.2', function(err,conn){
+            let rabbitIp = process.env.RABBIT_IP
+            amqp.connect('amqp://'+rabbitIp, function(err,conn){
                 conn.createChannel(function (err, ch){
                     var q = 'dqReminderTime';
 

@@ -3,7 +3,8 @@ let MongoClient = require('mongodb').MongoClient;
 let assert = require('assert');
 
 const reminders = () => {
-    const url = 'mongodb://172.17.0.3:27017/daily-questions-reminder';
+    let mongoIp = process.env.MONGO_IP
+    const url = 'mongodb://'+ mongoIp + ':27017/daily-questions-reminder';
     return {
         insert : (message, collection) => {
             MongoClient.connect(url, function(err, db) {
