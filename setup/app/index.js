@@ -1,7 +1,7 @@
 'use strict';
 
 let Botkit = require('botkit');
-let consoleBot = require('./ConsoleBot')();
+let consoleBot = require('./consoleBot')();
 let slackBot = require('./slackBot')();
 let exchange = require('./exchange')();
 

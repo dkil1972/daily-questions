@@ -16,7 +16,7 @@ function insertDocuments(db, data, callback){
     });
 }
 
-const slackBot = () => {
+const SlackBot = () => {
     return {
         init : (controller, exchange) => {
             controller.spawn({
@@ -34,4 +34,4 @@ const slackBot = () => {
     }
 }
 
-module.exports = slackBot;
+module.exports = SlackBot;
