@@ -18,7 +18,8 @@
     "datejs": "1.0.0-rc3"
   },
   "devDependencies": {
-      "botkit-testing": "0.1.x"
+      "botkit-testing": "0.1.x",
+      "grunt":"1.0.1"
   },
   "author": "Dermot Kilroy",
   "license": "ISC",
