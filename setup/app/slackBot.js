@@ -6,7 +6,7 @@
 let MongoClient = require('mongodb').MongoClient;
 
 let mongoIp = process.env.MONGO_IP
-let uri = 'mongodb://' + mongoIp + ':27017/daily-questions'
+let uri = 'mongodb://mongodb/daily-questions'
 
 
 function insertDocuments(db, data, callback){

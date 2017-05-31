@@ -1,0 +1,23 @@
+version: '2'
+services: 
+    rabbitmq:
+      image: rabbitmq:management
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+
+    mongodb:
+      image: mongo
+      ports:
+        - "27017:27017"
+
+    dq-setup:
+      build: .
+      working_dir: /home/developer/workspace
+      volumes:
+        - .:/home/developer/workspace
+      links:
+        - mongodb
+        - rabbitmq
+      environment:
+        TOKEN: xoxb-165950843698-TeadEMymGDJQhdFOsKBpKRDK

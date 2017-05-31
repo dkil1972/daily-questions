@@ -6,7 +6,7 @@ const exchange = () => {
     return {
         publish : (message) => {
             let rabbitIp = process.env.RABBIT_IP
-            amqp.connect('amqp://'+rabbitIp, function(err,conn){
+            amqp.connect('amqp://rabbitmq', function(err,conn){
                 conn.createChannel(function (err, ch){
                     var q = 'dqReminderTime';
 
